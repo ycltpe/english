@@ -68,6 +68,7 @@ english-learning-docs/
 │   │   └── index.md           # 学习资源
 │   └── index.md               # 首页
 ├── package.json               # 项目配置
+├── .gitignore                # Git 忽略文件
 └── README.md                 # 项目说明
 ```
 
@@ -135,10 +136,11 @@ english-learning-docs/
 
 本项目配置了 GitHub Actions 自动部署功能：
 
-### 部署工作流
+### 部署配置
+- **Base 路径**: `/english/` - 适用于 GitHub Pages 子目录部署
 - **触发条件**: 推送到 main/master 分支时自动触发
 - **构建环境**: Ubuntu 最新版本
-- **Node.js 版本**: 18.x
+- **Node.js 版本**: 22.x
 - **部署目标**: GitHub Pages
 
 ### CI/CD 流程
@@ -146,6 +148,10 @@ english-learning-docs/
 2. **构建测试**: 确保网站能够正常构建
 3. **链接检查**: 检查文档中的链接是否有效
 4. **自动部署**: 构建成功后自动部署到 GitHub Pages
+
+### 访问地址
+部署成功后，网站将可通过以下地址访问：
+- `https://[username].github.io/[repository-name]/english/`
 
 ### 手动部署
 你也可以在 GitHub Actions 页面手动触发部署：

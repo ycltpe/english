@@ -4,6 +4,7 @@ export default defineConfig({
   title: "英语学习指南",
   description: "系统化的英语学习资源与规划",
   lang: 'zh-CN',
+  base: '/english/',
   themeConfig: {
     logo: '/logo.png',
     siteTitle: '英语学习指南',

@@ -17,7 +17,13 @@
 1. 推送代码到 `main` 或 `master` 分支
 2. GitHub Actions 自动触发构建
 3. 构建成功后自动部署到 GitHub Pages
-4. 访问 `https://[username].github.io/[repository-name]`
+4. 访问 `https://[username].github.io/[repository-name]/english/`
+
+#### Base 路径配置
+本项目配置了 base 路径为 `/english/`，这意味着：
+- 网站将部署在 GitHub Pages 的子目录中
+- 所有内部链接都会自动添加 `/english/` 前缀
+- 适用于仓库名称为 "english" 的情况
 
 #### 手动触发部署
 1. 进入 GitHub 仓库的 Actions 页面
@@ -56,7 +62,8 @@ vercel
 1. 连接 GitHub 仓库到 Vercel
 2. 配置构建命令：`npm run docs:build`
 3. 配置输出目录：`docs/.vitepress/dist`
-4. 自动部署
+4. 配置基础路径：`/english/`
+5. 自动部署
 
 ### 4. Netlify 部署
 
@@ -76,7 +83,8 @@ netlify deploy --dir=docs/.vitepress/dist
 1. 连接 GitHub 仓库到 Netlify
 2. 配置构建命令：`npm run docs:build`
 3. 配置发布目录：`docs/.vitepress/dist`
-4. 自动部署
+4. 配置基础路径：`/english/`
+5. 自动部署
 
 ## 🔧 环境配置
 
@@ -85,8 +93,8 @@ netlify deploy --dir=docs/.vitepress/dist
 # 生产环境
 NODE_ENV=production
 
-# 自定义基础路径（如果需要）
-VITEPRESS_BASE=/
+# 自定义基础路径
+VITEPRESS_BASE=/english/
 ```
 
 ### 构建优化
@@ -138,6 +146,11 @@ npm install
 - 检查 VitePress 配置
 - 确认搜索索引生成
 - 验证中文搜索配置
+
+#### Base 路径问题
+- 确认 `base: '/english/'` 配置正确
+- 检查所有内部链接是否包含正确的前缀
+- 验证部署后的访问路径
 
 ### 调试技巧
 ```bash
