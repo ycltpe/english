@@ -242,6 +242,7 @@ export default defineConfig({
     ],
     outline: { label: '大纲' },
     docFooter: { prev: '上一篇', next: '下一篇' },
+    returnToTopLabel: "回到顶部",
     footer: {
       message: '基于 MIT 许可发布',
       copyright: 'Copyright © 2024 英语学习指南'
