@@ -85,6 +85,19 @@ function getDisplayName(dirName) {
   return nameMap[dirName] || dirName
 }
 
+// 获取目录的排序权重
+function getDirectoryOrder(dirName) {
+  const orderMap = {
+    'guide': 1,           // 学习规划 - 第一
+    'grammar': 2,         // 语法基础 - 第二
+    'vocabulary': 3,      // 词汇积累 - 第三
+    'listening-speaking': 4, // 听说训练 - 第四
+    'reading-writing': 5, // 阅读写作 - 第五
+    'resources': 6        // 学习资源 - 最后
+  }
+  return orderMap[dirName] || 999 // 未配置的目录排在最后
+}
+
 // 生成导航菜单（支持多级目录）
 function generateNav() {
   const docsDir = path.resolve(__dirname, '..')
@@ -97,6 +110,7 @@ function generateNav() {
     const directoryStructure = scanDirectory(docsDir)
     
     // 处理一级目录
+    const navItems = []
     for (const item of directoryStructure) {
       if (item.type === 'directory') {
         const indexPath = path.join(item.fullPath, 'index.md')
@@ -121,12 +135,17 @@ function generateNav() {
           }
         }
         
-        nav.push({
+        navItems.push({
           text: title,
-          link: `/${item.name}/`
+          link: `/${item.name}/`,
+          order: getDirectoryOrder(item.name)
         })
       }
     }
+    
+    // 按排序权重排序
+    navItems.sort((a, b) => a.order - b.order)
+    nav.push(...navItems.map(item => ({ text: item.text, link: item.link })))
     
     console.log('🎯 生成的导航菜单:', nav.map(item => `${item.text} -> ${item.link}`))
   } catch (error) {
@@ -178,21 +197,34 @@ function generateSidebar() {
     const directoryStructure = scanDirectory(docsDir)
     
     // 为每个一级目录生成侧边栏配置
+    const sidebarItems = []
     for (const item of directoryStructure) {
       if (item.type === 'directory') {
-        const sidebarItems = generateSidebarForDirectory(item)
+        const items = generateSidebarForDirectory(item)
         
-        if (sidebarItems.length > 0) {
-          sidebar[`/${item.name}/`] = [
-            {
-              text: getDisplayName(item.name),
-              items: sidebarItems
-            }
-          ]
-          console.log(`✅ ${item.name}: 生成${sidebarItems.length}个侧边栏项目`)
+        if (items.length > 0) {
+          sidebarItems.push({
+            name: item.name,
+            path: `/${item.name}/`,
+            text: getDisplayName(item.name),
+            items: items,
+            order: getDirectoryOrder(item.name)
+          })
+          console.log(`✅ ${item.name}: 生成${items.length}个侧边栏项目`)
         }
       }
     }
+    
+    // 按排序权重排序并添加到sidebar
+    sidebarItems.sort((a, b) => a.order - b.order)
+    sidebarItems.forEach(item => {
+      sidebar[item.path] = [
+        {
+          text: item.text,
+          items: item.items
+        }
+      ]
+    })
     
     console.log('🎯 侧边栏配置生成完成')
   } catch (error) {
